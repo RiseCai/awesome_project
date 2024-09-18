@@ -57,6 +57,12 @@ def get_project_root():
 
 def main():
     print("Current working directory:", os.getcwd())
+    
+    # 检查是否在非交互式环境中运行
+    if not sys.stdin.isatty():
+        print("Running in non-interactive environment. Exiting.")
+        sys.exit(0)
+    
     tasks = get_tasks()
     if not tasks:
         print("No tasks found. Please create some tasks first.")
