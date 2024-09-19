@@ -37,7 +37,7 @@ def get_feature_id():
 
 def get_changed_files():
     result = subprocess.check_output(['git', 'status', '--porcelain']).decode('utf-8')
-    return result.strip().split('\n')
+    return [line for line in result.strip().split('\n') if line.strip()]
 
 def categorize_changes(changes):
     categories = {
@@ -134,10 +134,10 @@ def create_commit(message, selected_files):
     for file in selected_files:
         status = file[:2].strip()
         filename = file[3:].strip()
-        if status != 'D':
+        if status == 'D':
+            subprocess.call(['git', 'rm', '--cached', filename])
+        elif status != '??':
             subprocess.call(['git', 'add', filename])
-        else:
-            subprocess.call(['git', 'rm', filename])
     subprocess.call(['git', 'commit', '-m', message])
     print("Commit created successfully.")
 
@@ -169,6 +169,9 @@ def main():
     except NameError:
         confirm = input("Do you want to proceed with this commit? (y/n): ")
     if confirm.lower() == 'y':
+        print("Files to be committed:")
+        for file in selected_files:
+            print(file)
         create_commit(final_message, selected_files)
     else:
         print("Commit cancelled.")
