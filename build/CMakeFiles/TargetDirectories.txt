@@ -1,8 +1,0 @@
-/home/caicai/software/workspace/awesome_project/build/CMakeFiles/install/strip.dir
-/home/caicai/software/workspace/awesome_project/build/CMakeFiles/install.dir
-/home/caicai/software/workspace/awesome_project/build/CMakeFiles/list_install_components.dir
-/home/caicai/software/workspace/awesome_project/build/CMakeFiles/rebuild_cache.dir
-/home/caicai/software/workspace/awesome_project/build/CMakeFiles/install/local.dir
-/home/caicai/software/workspace/awesome_project/build/CMakeFiles/awesome_project.dir
-/home/caicai/software/workspace/awesome_project/build/CMakeFiles/edit_cache.dir
-/home/caicai/software/workspace/awesome_project/build/CMakeFiles/awesome_project_lib.dir
