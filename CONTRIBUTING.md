@@ -29,6 +29,11 @@
 
 在提交代码之前，请运行以下命令：
 
+./script/check_style.sh
+./script/check_compile.sh
+使用以下脚本可以修复
+./script/format_code.sh
+
 ## 测试
 
 在提交之前，请确保所有测试都能通过。如果您添加了新功能，请也添加相应的测试。
