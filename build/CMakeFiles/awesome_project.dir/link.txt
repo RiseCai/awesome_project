@@ -1,0 +1,1 @@
+/usr/bin/cc    CMakeFiles/awesome_project.dir/src/main.c.o  -o awesome_project  libawesome_project_lib.a 
