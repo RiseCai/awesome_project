@@ -3,6 +3,6 @@
 
 #include "role_factory.h"
 
-Role* CreateProductManager();
+Role *CreateProductManager();
 
 #endif // PRODUCT_MANAGER_H

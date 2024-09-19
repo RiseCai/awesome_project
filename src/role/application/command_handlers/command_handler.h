@@ -3,6 +3,6 @@
 
 #include "../../core/domain/commands/command.h"
 
-void HandleCommand(Command* command);
+void HandleCommand(Command *command);
 
 #endif // COMMAND_HANDLER_H

@@ -4,13 +4,13 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#define DEBUG_PRINT(fmt, ...) \
-    do { fprintf(stderr, "%s:%d:%s(): " fmt, __FILE__, \
-                __LINE__, __func__, __VA_ARGS__); } while (0)
+#define DEBUG_PRINT(fmt, ...)                                                  \
+    fprintf(stderr, "%s:%d:%s(): " fmt, __FILE__, __LINE__, __func__,          \
+            ##__VA_ARGS__)
 
-#include <time.h>
-#include "../role/role_types.h"  // 包含 RoleType 定义
 #include "../core/state_machine.h"
+#include "../role/role_types.h" // 包含 RoleType 定义
+#include <time.h>
 
 typedef enum {
     PHASE_REQUIREMENTS,
@@ -36,31 +36,32 @@ typedef struct {
 
 typedef struct Task {
     int id;
-    char description[100];  // 改为数组而不是指针
+    char description[100]; // 改为数组而不是指针
     RoleType assigned_role;
     VModelPhase phase;
     TaskType type;
     int priority;
     TaskTiming timing;
-    struct Task** dependencies;
+    struct Task **dependencies;
     int dependency_count;
-    struct Task* next;  // For linked list implementation
+    struct Task *next; // For linked list implementation
     bool is_completed;
-    bool managed_by_graph;  // 新增字段
+    bool managed_by_graph; // 新增字段
     StateMachine state_machine;
 } Task;
 
-const char* GetTaskTypeName(TaskType type);
-void InitializeTask(Task* task, int id, TaskType type, const char* description, RoleType role, VModelPhase phase);
-void ExecuteTask(Task* task);
-void DestroyTask(Task* task);
+const char *GetTaskTypeName(TaskType type);
+void InitializeTask(Task *task, int id, TaskType type, const char *description,
+                    RoleType role, VModelPhase phase);
+void ExecuteTask(Task *task);
+void DestroyTask(Task *task);
 
-void Task_Initialize(Task* task);
-void Task_Run(Task* task);
-void Task_Pause(Task* task);
-void Task_Resume(Task* task);
-void Task_Sleep(Task* task);
-void Task_Wake(Task* task);
-void Task_Reset(Task* task);
+void Task_Initialize(Task *task);
+void Task_Run(Task *task);
+void Task_Pause(Task *task);
+void Task_Resume(Task *task);
+void Task_Sleep(Task *task);
+void Task_Wake(Task *task);
+void Task_Reset(Task *task);
 
 #endif // TASK_H

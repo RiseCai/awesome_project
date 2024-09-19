@@ -3,7 +3,7 @@
 
 #include "../../core/domain/commands/command.h"
 
-void LinuxAdapter_ParseCommand(const char* rawCommand, Command** outCommand);
-void LinuxAdapter_ExecuteCommand(Command* command);
+void LinuxAdapter_ParseCommand(const char *rawCommand, Command **outCommand);
+void LinuxAdapter_ExecuteCommand(Command *command);
 
 #endif // LINUX_ADAPTER_H

@@ -1,0 +1,19 @@
+---
+# 使用 LLVM 样式作为基础，这是一个广泛支持的样式
+BasedOnStyle: LLVM
+IndentWidth: 4
+UseTab: Never
+TabWidth: 4
+BreakBeforeBraces: Linux
+AllowShortIfStatementsOnASingleLine: false
+IndentCaseLabels: false
+
+# 平台特定设置
+Language: Cpp
+IncludeCategories:
+  - Regex:           '^<android'
+    Priority:        2
+  - Regex:           '.*'
+    Priority:        1
+
+SortIncludes: false

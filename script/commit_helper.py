@@ -55,6 +55,21 @@ def get_message():
 def get_project_root():
     return subprocess.check_output(['git', 'rev-parse', '--show-toplevel']).strip()
 
+def create_new_task():
+    task_id = raw_input("Enter new task ID (e.g., TASK011): ")
+    title = raw_input("Enter task title: ")
+    description = raw_input("Enter task description: ")
+    
+    task_file = os.path.join('docs', 'docs', 'tasks', f"{task_id}_{title.replace(' ', '_')}.md")
+    with open(task_file, 'w') as f:
+        f.write(f"# {title}\n\n{description}\n")
+    
+    print(f"New task created: {task_file}")
+    return task_id, title
+
+def skip_helper():
+    return raw_input("Enter your commit message: ")
+
 def main():
     print("Current working directory:", os.getcwd())
     
@@ -67,6 +82,20 @@ def main():
     if not tasks:
         print("No tasks found. Please create some tasks first.")
         sys.exit(1)
+
+    print("Enter 'n' to create a new task, or 's' to skip the helper and enter a commit message directly.")
+    choice = raw_input("Your choice (or press Enter to continue normally): ").lower()
+
+    if choice == 'n':
+        task_id, title = create_new_task()
+        status = "To Do"
+        message = title
+    elif choice == 's':
+        commit_message = skip_helper()
+        with open(os.path.join(get_project_root(), 'commit_message_file'), 'w') as f:
+            f.write(commit_message)
+        print("Commit message saved. Proceeding with git commit.")
+        sys.exit(0)
 
     task_id = select_task(tasks)
     status = get_status()
@@ -82,7 +111,8 @@ def main():
     with open(commit_message_file, 'w') as f:
         f.write(commit_message)
 
-    print("Commit message has been generated. Proceed with git commit.")
+    print("Commit message has been generated and saved to {}".format(commit_message_file))
+    print("Use 'git commit -F {}' to commit with this message.".format(commit_message_file))
 
 if __name__ == "__main__":
     main()

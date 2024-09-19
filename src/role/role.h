@@ -6,13 +6,13 @@
 struct Task;
 
 typedef struct Role {
-    void (*HandleTask)(struct Role* self, struct Task* task);
-    void (*InterruptTask)(struct Role* self, struct Task* task);
-    void (*ResumeTask)(struct Role* self, struct Task* task);
+    void (*HandleTask)(struct Role *self, struct Task *task);
+    void (*InterruptTask)(struct Role *self, struct Task *task);
+    void (*ResumeTask)(struct Role *self, struct Task *task);
 } Role;
 
-typedef Role* (*RoleFactory)();
+typedef Role *(*RoleFactory)();
 
-Role* CreateRole(RoleType type);
+Role *CreateRole(RoleType type);
 
 #endif // ROLE_H

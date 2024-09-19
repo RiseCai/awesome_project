@@ -3,6 +3,6 @@
 
 #include "command.h"
 
-Command* CreateCommand(const char* commandName, void* commandData);
+Command *CreateCommand(const char *commandName, void *commandData);
 
 #endif // COMMAND_FACTORY_H
