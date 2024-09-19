@@ -8,6 +8,10 @@ import re
 import tempfile
 from datetime import datetime
 
+def normalize_filename(filename):
+    # Remove leading spaces and any status indicators
+    return filename.strip().split()[-1]
+
 def get_current_branch():
     result = subprocess.check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD']).decode('utf-8')
     return result.strip()
@@ -50,7 +54,7 @@ def categorize_changes(changes):
     for change in changes:
         if change:
             status = change[:2].strip()
-            filename = change[3:].strip()
+            filename = normalize_filename(change)
             if status == 'A':
                 categories['Added'].append(filename)
             elif status == 'M':
@@ -116,7 +120,7 @@ def select_files_to_commit(changes):
     print("Select files to commit:")
     for i, change in enumerate(changes):
         status = change[:2].strip()
-        filename = change[3:].strip()
+        filename = normalize_filename(change)
         status_text = "Deleted" if status == 'D' else "Modified" if status == 'M' else "Added" if status == 'A' else "Untracked"
         print("{0}. [{1}] {2}".format(i + 1, status_text, filename))
     
@@ -133,9 +137,9 @@ def select_files_to_commit(changes):
 def create_commit(message, selected_files):
     for file in selected_files:
         status = file[:2].strip()
-        filename = file[3:].strip()
+        filename = normalize_filename(file)
         if status == 'D':
-            subprocess.call(['git', 'rm', '--cached', filename])
+            subprocess.call(['git', 'rm', filename])
         elif status != '??':
             subprocess.call(['git', 'add', filename])
     subprocess.call(['git', 'commit', '-m', message])
