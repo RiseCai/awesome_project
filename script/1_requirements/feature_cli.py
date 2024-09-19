@@ -9,14 +9,26 @@ from datetime import datetime
 
 FEATURES_DIR = os.path.join('docs', 'docs', 'features')
 
+def get_feature_status(content):
+    for line in content.split('\n'):
+        if line.strip().startswith('- [x]'):
+            return line.strip()[5:]
+    return "To Do"
+
 def list_features():
     print("Looking for features in: {0}".format(FEATURES_DIR))
     features = [f for f in os.listdir(FEATURES_DIR) if f.endswith('.md')]
     print("Found {0} feature files".format(len(features)))
+    print("\nID                  | Status       | Title")
+    print("--------------------|--------------|------------------------")
     for feature in sorted(features):
         with open(os.path.join(FEATURES_DIR, feature), 'r') as f:
-            first_line = f.readline().strip()
-            print(first_line)
+            content = f.read()
+            first_line = content.split('\n')[0]
+            feature_id = first_line.split(':')[0].strip('# ')
+            title = first_line.split(':')[1].strip()
+            status = get_feature_status(content)
+            print("{0:<20} | {1:<12} | {2}".format(feature_id, status, title[:30]))
 
 def show_feature(feature_id):
     feature_file = find_feature_file(feature_id)
@@ -79,17 +91,22 @@ def main():
     parser = argparse.ArgumentParser(description="Feature CLI for managing features")
     parser.add_argument("action", choices=["list", "show", "update", "add-progress"], help="Action to perform")
     parser.add_argument("--id", help="Feature ID for show, update, and add-progress actions")
+    parser.add_argument("--status", choices=["To Do", "In Progress", "Done"], help="New status for update action")
+    parser.add_argument("--note", help="Progress note for add-progress action")
+
     args = parser.parse_args()
+
     if args.action == "list":
         list_features()
     elif args.action == "show":
+        if not args.id:
+            print("Error: --id is required for show action")
+            sys.exit(1)
         show_feature(args.id)
     elif args.action == "update":
-        update_feature_status(args.id, args.id)
+        if not args.id or not args.status:
+            print("Error: --id and --status are required for update action")
+            sys.exit(1)
+        update_feature_status(args.id, args.status)
     elif args.action == "add-progress":
-        add_progress(args.id, args.id)
-    else:
-        parser.print_help()
-
-if __name__ == "__main__":
-    main()
+        if not args.id or

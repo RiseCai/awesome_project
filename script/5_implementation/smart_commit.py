@@ -49,7 +49,8 @@ def categorize_changes(changes):
     }
     for change in changes:
         if change:
-            status, filename = change.split(' ', 1)
+            status = change[:2].strip()
+            filename = change[3:].strip()
             if status == 'A':
                 categories['Added'].append(filename)
             elif status == 'M':
@@ -114,7 +115,10 @@ def edit_message(message):
 def select_files_to_commit(changes):
     print("Select files to commit:")
     for i, change in enumerate(changes):
-        print("{0}. {1}".format(i + 1, change))
+        status = change[:2].strip()
+        filename = change[3:].strip()
+        status_text = "Deleted" if status == 'D' else "Modified" if status == 'M' else "Added" if status == 'A' else "Untracked"
+        print("{0}. [{1}] {2}".format(i + 1, status_text, filename))
     
     try:
         selected = raw_input("Enter the numbers of files to commit (comma-separated) or 'all': ")
@@ -128,7 +132,12 @@ def select_files_to_commit(changes):
 
 def create_commit(message, selected_files):
     for file in selected_files:
-        subprocess.call(['git', 'add', file.split(' ', 1)[1]])
+        status = file[:2].strip()
+        filename = file[3:].strip()
+        if status != 'D':
+            subprocess.call(['git', 'add', filename])
+        else:
+            subprocess.call(['git', 'rm', filename])
     subprocess.call(['git', 'commit', '-m', message])
     print("Commit created successfully.")
 
